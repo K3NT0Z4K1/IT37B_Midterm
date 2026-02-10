@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Station - IoT Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="grain-overlay"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/>
+                            <circle cx="12" cy="12" r="4"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Weather Station</h1>
+                        <p class="subtitle">ESP32 + DHT11 Monitoring</p>
+                    </div>
+                </div>
+                
+                <div class="connection-status">
+                    <div class="status-indicator" id="statusIndicator"></div>
+                    <span id="statusText">Connecting...</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Alert Banner -->
+        <div class="alert-banner" id="alertBanner" style="display: none;">
+            <div class="alert-content">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-message" id="alertMessage"></div>
+                <button class="alert-close" onclick="closeAlertBanner()">×</button>
+            </div>
+        </div>
+
+        <!-- Current Readings -->
+        <section class="current-readings">
+            <div class="reading-card temperature-card">
+                <div class="card-header">
+                    <span class="card-label">Temperature</span>
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+                    </svg>
+                </div>
+                <div class="reading-value" id="temperatureValue">--</div>
+                <div class="reading-unit">°C</div>
+                <div class="reading-stats">
+                    <span class="stat-item">
+                        <span class="stat-label">Min</span>
+                        <span class="stat-value" id="tempMin">--</span>
+                    </span>
+                    <span class="stat-item">
+                        <span class="stat-label">Avg</span>
+                        <span class="stat-value" id="tempAvg">--</span>
+                    </span>
+                    <span class="stat-item">
+                        <span class="stat-label">Max</span>
+                        <span class="stat-value" id="tempMax">--</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="reading-card humidity-card">
+                <div class="card-header">
+                    <span class="card-label">Humidity</span>
+                    <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                    </svg>
+                </div>
+                <div class="reading-value" id="humidityValue">--</div>
+                <div class="reading-unit">%</div>
+                <div class="reading-stats">
+                    <span class="stat-item">
+                        <span class="stat-label">Min</span>
+                        <span class="stat-value" id="humidityMin">--</span>
+                    </span>
+                    <span class="stat-item">
+                        <span class="stat-label">Avg</span>
+                        <span class="stat-value" id="humidityAvg">--</span>
+                    </span>
+                    <span class="stat-item">
+                        <span class="stat-label">Max</span>
+                        <span class="stat-value" id="humidityMax">--</span>
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts -->
+        <section class="charts-section">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">Historical Data</h3>
+                    <div class="chart-controls">
+                        <button class="time-btn active" data-hours="1">1H</button>
+                        <button class="time-btn" data-hours="6">6H</button>
+                        <button class="time-btn" data-hours="24">24H</button>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="weatherChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Alerts Section -->
+        <section class="alerts-section">
+            <div class="section-header">
+                <h3 class="section-title">Recent Alerts</h3>
+                <div class="alert-count" id="alertCount">0</div>
+            </div>
+            <div class="alerts-list" id="alertsList">
+                <div class="no-alerts">No alerts at this time</div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <span>Last updated: <span id="lastUpdate">--</span></span>
+                    <span class="separator">•</span>
+                    <span>Readings: <span id="readingCount">--</span></span>
+                </div>
+                <div class="footer-credit">
+                    <span>ESP32 IoT Project</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
